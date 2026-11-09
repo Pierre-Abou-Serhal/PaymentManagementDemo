@@ -9,8 +9,9 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 BASE = Path(__file__).resolve().parents[1]
-SCHEMAS = BASE / "backend" / "Iso20022" / "Schemas"
-OUT = BASE / "backend" / "Iso20022" / "manifest.json"
+CATALOGUE = BASE / "backend" / "PaymentManagement" / "Iso20022"
+SCHEMAS = CATALOGUE / "Schemas"
+OUT = CATALOGUE / "manifest.json"
 PAIRS = [
     ("pain.001.001.01", ["pain.002.001.01"]),
     ("pain.001.002.01", ["pain.002.001.01"]),

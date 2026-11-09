@@ -1,0 +1,77 @@
+<section class="group-header-block">
+    <div class="section-head">
+        <div class="section-title">
+            <span class="section-icon"><app-icon name="file" /></span>
+            <div>
+                <h2>File details</h2>
+                <p>Original ISO 20022 group header</p>
+            </div>
+        </div>
+        <span class="code-tag">GrpHdr</span>
+    </div>
+    @if (header?.available) {
+        <dl class="header-fields" [class.compact]="compact">
+            <div>
+                <dt>Message ID</dt>
+                <dd class="mono">{{ header?.messageId || 'Not supplied' }}</dd>
+            </div>
+            <div>
+                <dt>Initiating party</dt>
+                <dd>{{ header?.initiatingParty || 'Not supplied' }}</dd>
+            </div>
+            <div>
+                <dt>Created in source file</dt>
+                <dd class="mono">{{ header?.createdAt || 'Not supplied' }}</dd>
+            </div>
+            <div>
+                <dt>Declared transactions</dt>
+                <dd>{{ header?.numberOfTransactions ?? 'Not supplied' }}</dd>
+            </div>
+            <div>
+                <dt>Control sum</dt>
+                <dd class="mono">{{ header?.controlSum ?? 'Not supplied' }}</dd>
+            </div>
+            <div>
+                <dt>Message definition</dt>
+                <dd class="mono">{{ header?.definition || 'Unknown' }}</dd>
+            </div>
+            @if (header?.forwardingAgent) {
+                <div>
+                    <dt>Forwarding agent</dt>
+                    <dd>{{ header?.forwardingAgent }}</dd>
+                </div>
+            }
+            @if (header?.batchBooking) {
+                <div>
+                    <dt>Batch booking</dt>
+                    <dd>{{ header?.batchBooking }}</dd>
+                </div>
+            }
+            @if (header?.grouping) {
+                <div>
+                    <dt>Grouping</dt>
+                    <dd>{{ header?.grouping }}</dd>
+                </div>
+            }
+        </dl>
+        <details class="disclosure">
+            <summary>
+                All group header fields <span>{{ header?.fields?.length }} values</span>
+            </summary>
+            <div class="header-values">
+                @for (field of header?.fields; track $index) {
+                    <div>
+                        <code>{{ field.path }}</code
+                        ><span>{{ field.value || '(empty)' }}</span>
+                    </div>
+                }
+            </div>
+        </details>
+        <details class="disclosure">
+            <summary>Original GrpHdr XML <app-icon name="code" /></summary>
+            <pre>{{ header?.xml }}</pre>
+        </details>
+    } @else {
+        <p class="empty-note">{{ header?.notice || 'Group header information is unavailable.' }}</p>
+    }
+</section>

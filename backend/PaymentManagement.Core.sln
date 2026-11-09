@@ -1,0 +1,51 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{67015552-1B8C-4017-A522-7385CE8E84A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentManagement", "PaymentManagement\PaymentManagement.csproj", "{CF895B0C-1FD9-429D-AC2E-B63A60ACDC0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{81B4AF02-9040-4BB4-B921-E92CBF135258}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{4BCEBD20-17A6-49BB-8A95-4CA38975C2C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{54FBA0B9-CB58-4FA1-A33B-547C2A644F8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsoChecks", "..\tests\IsoChecks\IsoChecks.csproj", "{98F54677-6E65-40C9-881F-6E0946C5370C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67015552-1B8C-4017-A522-7385CE8E84A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67015552-1B8C-4017-A522-7385CE8E84A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67015552-1B8C-4017-A522-7385CE8E84A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67015552-1B8C-4017-A522-7385CE8E84A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF895B0C-1FD9-429D-AC2E-B63A60ACDC0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF895B0C-1FD9-429D-AC2E-B63A60ACDC0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF895B0C-1FD9-429D-AC2E-B63A60ACDC0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF895B0C-1FD9-429D-AC2E-B63A60ACDC0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B4AF02-9040-4BB4-B921-E92CBF135258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B4AF02-9040-4BB4-B921-E92CBF135258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B4AF02-9040-4BB4-B921-E92CBF135258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B4AF02-9040-4BB4-B921-E92CBF135258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BCEBD20-17A6-49BB-8A95-4CA38975C2C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BCEBD20-17A6-49BB-8A95-4CA38975C2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BCEBD20-17A6-49BB-8A95-4CA38975C2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BCEBD20-17A6-49BB-8A95-4CA38975C2C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98F54677-6E65-40C9-881F-6E0946C5370C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98F54677-6E65-40C9-881F-6E0946C5370C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98F54677-6E65-40C9-881F-6E0946C5370C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F54677-6E65-40C9-881F-6E0946C5370C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{98F54677-6E65-40C9-881F-6E0946C5370C} = {54FBA0B9-CB58-4FA1-A33B-547C2A644F8E}
+	EndGlobalSection
+EndGlobal

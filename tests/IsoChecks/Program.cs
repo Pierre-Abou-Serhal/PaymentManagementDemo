@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.FileProviders;
-using PaymentManagement.Api.Iso20022;
+using PaymentManagement.BLL.Iso20022;
 using System.Text.Json;
 using System.Xml.Linq;
 using System.Text;
 
-var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../backend"));
+var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../backend/PaymentManagement"));
 var samples = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../demo/samples"));
-var iso = new IsoService(new Env(root));
+var iso = new IsoService(Path.Combine(root, "Iso20022"));
 var rules = new Dictionary<string, (decimal, int)> { ["EUR"] = (10000, 1), ["USD"] = (10000, 1), ["GBP"] = (10000, 1), ["LBP"] = (1000000000, 1) };
 ImportedFile Read(string name) => iso.Read(File.ReadAllBytes(Path.Combine(samples, name)), rules, "0019");
 void Check(bool condition, string name) { if (!condition) throw new Exception("FAILED: " + name); Console.WriteLine("PASS: " + name); }
@@ -100,14 +98,4 @@ foreach (var definition in inventory.RootElement.GetProperty("definitions").Enum
             Check(statusCount == input.Groups.Sum(g => g.Transfers.Count), inputCode + " → " + outputCode + " " + scenario + " full report");
         }
     }
-}
-
-sealed class Env(string root) : IWebHostEnvironment
-{
-    public string ApplicationName { get; set; } = "PaymentManagement.Api";
-    public IFileProvider WebRootFileProvider { get; set; } = new NullFileProvider();
-    public string WebRootPath { get; set; } = root;
-    public string EnvironmentName { get; set; } = "Test";
-    public string ContentRootPath { get; set; } = root;
-    public IFileProvider ContentRootFileProvider { get; set; } = new PhysicalFileProvider(root);
 }

@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 base = Path(__file__).resolve().parents[1]
-manifest = json.loads((base / "backend/Iso20022/manifest.json").read_text(encoding="utf-8"))
+manifest = json.loads((base / "backend/PaymentManagement/Iso20022/manifest.json").read_text(encoding="utf-8"))
 lines = [
     "/* PaymentManagementDemo configuration. Apply after 001_schema.sql. No payment outcomes are seeded. */",
     "USE PaymentManagementDemo;",

@@ -1,5 +1,24 @@
 # Test report — 2026-11-08
 
+## .NET 8 retarget
+
+- The full solution built with .NET SDK 8.0.427 in Release with zero warnings. All 155 ISO checks passed.
+- The ASP.NET Core 8 API started and Swagger listed all 24 payment actions. The HTTP smoke test passed against an isolated SQL Server Express database at compatibility level 130.
+
+## BaseApiProject and BaseFrontendProject alignment — 2026-11-09
+
+- The .NET 10 Release build passed with zero warnings, all 155 ISO checks passed, and the Angular production build succeeded.
+- Swagger documented 24 named payment actions. The HTTP smoke test passed against SQL Server Express at compatibility level 130 in a temporary database. It covered correlation and validation envelopes, settings reads, multipart intake, GrpHdr, stale bulk decisions, idempotent finalization, audit history, and XML and JSON attachments.
+- Headless Edge loaded the work queue and settings with data from the temporary API and database.
+- The tests used ASP.NET Core structured logging. Building with `SGBL.NLogUtil` requires the team's NuGet source and `-p:UseTeamLogging=true`.
+
+## .NET 8 and stored procedure update — 2026-11-09
+
+- Built the controller, BAL, DAL, Common, and ISO check projects with SDK **8.0.427**. The Release build passed without warnings, and all **155** ISO checks passed.
+- Applied the schema, seed data, and `003_stored_procedures.sql` in a temporary SQL Server 2025 Express database at compatibility level **130**. The procedure script applied twice successfully. All 60 procedure names matched the DAL calls; the backend had no inline table SQL. A native SQL Server 2016 engine was not available.
+- The HTTP smoke test passed for import, automatic rejection, atomic stale bulk conflict, finalization, revision history, duplicates, and report download. Additional checks passed for folder polling and archive, GrpHdr search, institution reassignment and locking, rule and mapping revision updates, exact source and report bytes, audit, validation errors, and publication failure/retry.
+- Windows x64 framework-dependent publish contained `PaymentManagement.Api.exe`, the manifest, and all 30 schemas. The Windows Service was not installed. The existing `PaymentManagementDemo` database was not migrated during verification.
+
 ## Interface and GrpHdr update — 2026-11-09
 
 The new header checks passed for all 15 initiation definitions, plus UTF-16/non-ASCII content, exact control-sum text, repeated authorization fields, nested party identifiers, malformed XML, and blocked DTD/external entities. The queue/receipt projection reads retained source bytes, removes the source blob from JSON, and adds the header view without a schema migration. Existing report/adaptor checks still pass. The frontend production build and backend Release build pass.
