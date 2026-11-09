@@ -1,0 +1,50 @@
+<header class="page-header">
+  <div><div class="eyebrow">PAYMENT OPERATIONS</div><h1>Work queue<span class="title-dot"></span></h1><p>Your incoming files, ready for a closer look.</p></div>
+  <a class="button primary" routerLink="/upload"><app-icon name="upload"/> Upload file</a>
+</header>
+@if(error()){<div class="alert error" role="alert"><app-icon name="alert"/><span>{{error()}}</span><button class="link-button" (click)="load()">Try again</button></div>}
+<div class="metric-grid">
+  <div class="metric"><div class="metric-label">Files on this page <app-icon name="inbox"/></div><strong>{{receipts().length}}</strong><span>Across selected filters</span></div>
+  <div class="metric"><div class="metric-label">In review <app-icon name="clock"/></div><strong>{{count('review')}}</strong><span>Awaiting operator completion</span></div>
+  <div class="metric"><div class="metric-label">Submitted <app-icon name="circleCheck"/></div><strong>{{count('submitted')}}</strong><span>Report generated</span></div>
+  <div class="metric"><div class="metric-label">Import exceptions <app-icon name="alert"/></div><strong>{{count('exceptions')}}</strong><span>Failed or duplicate arrivals</span></div>
+</div>
+
+<section class="panel queue-panel">
+  <div class="panel-heading"><div><h2>File inbox <span class="count-pill">{{receipts().length}}</span></h2><p>Message details are read directly from the original GrpHdr.</p></div><button class="button quiet icon-button" aria-label="Refresh work queue" (click)="load();checkHealth()" [disabled]="loading()"><app-icon name="refresh"/></button></div>
+  <div class="queue-filters">
+    <div class="segmented" aria-label="Filter by workflow status">
+      <button [class.active]="state===''" (click)="filter('')">All files</button><button [class.active]="state==='Editable'" (click)="filter('Editable')">In review</button><button [class.active]="state==='Finalized'" (click)="filter('Finalized')">Submitted</button><button [class.active]="state==='ImportFailed'" (click)="filter('ImportFailed')">Import failed</button><button [class.active]="state==='Duplicate'" (click)="filter('Duplicate')">Duplicates</button>
+    </div>
+    <div class="filter-controls"><label class="search-box"><app-icon name="search"/><input aria-label="Search files by filename or message ID" placeholder="Search file or message ID…" [(ngModel)]="search" (ngModelChange)="searchChanged()"></label><select aria-label="Filter by institution" [(ngModel)]="institution" (change)="filter()"><option value="">All institutions</option>@for(i of institutions();track i.id){<option [value]="i.id">{{i.code}}</option>}</select></div>
+  </div>
+  <div class="table-wrap" [attr.aria-busy]="loading()">
+    <table class="queue-table"><thead><tr><th>File / institution</th><th>Group header</th><th>Transactions</th><th>Control sum</th><th>Received / source created</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>
+      @for(r of receipts();track r.id){
+        <tr [class.selected-row]="selectedReceipt()?.id===r.id">
+          <td><div class="file-cell"><span class="file-icon"><app-icon name="file"/></span><div><a class="file-name" [routerLink]="r.batchId?['/batches',r.batchId]:['/receipts',r.id]">{{r.originalFilename}}</a><small><span class="institution-tag">{{r.effectiveInstitution}}</span> {{r.channel==='Poll'?'Folder arrival':'Uploaded'}} · {{r.detectedDefinition||'Unrecognized definition'}}</small></div></div></td>
+          <td><strong class="mono message-id">{{r.groupHeader?.messageId||'Header unavailable'}}</strong><small>{{r.groupHeader?.initiatingParty||'Initiating party not supplied'}}</small></td>
+          <td><strong class="tabular">{{r.groupHeader?.numberOfTransactions??'—'}}</strong><small>{{r.batchId?r.transferCount+' imported':'Declared in header'}}</small></td>
+          <td><strong class="mono">{{r.groupHeader?.controlSum??'—'}}</strong><small>{{r.groupHeader?.controlSum!=null?'Source control sum':'Not supplied'}}</small></td>
+          <td><span class="date-cell">{{r.receivedUtc+'Z'|date:'dd MMM, HH:mm'}}</span><small>Created {{r.groupHeader?.createdAt||'not supplied'}}</small></td>
+          <td><app-status [value]="r.batchState||r.importState"/><small>@if(r.batchState==='Editable'){ {{r.pendingCount}} pending }@else{ {{r.locationState}} }</small></td>
+          <td><button class="button quiet small" (click)="selectedReceipt.set(r)" [attr.aria-label]="'View file details for '+r.originalFilename">Details <app-icon name="chevron"/></button></td>
+        </tr>
+      }@empty{
+        <tr><td colspan="7"><div class="empty-state"><span class="empty-icon"><app-icon name="inbox"/></span><h3>{{loading()?'Loading your files…':'Your queue is clear'}}</h3><p>{{loading()?'Getting the latest receipts.':'Upload an initiation file, or adjust your filters to find a received file.'}}</p>@if(!loading()&&!search&&!state&&!institution){<a class="button primary small" routerLink="/upload">Upload your first file <app-icon name="arrow"/></a>}</div></td></tr>
+      }
+    </tbody></table>
+  </div>
+  <footer class="table-footer"><span>{{receipts().length?'Showing '+(skip+1)+'–'+(skip+receipts().length):'0 files'}} <span class="muted">· {{pageSize}} per page</span></span><div class="pagination"><button class="button quiet small" [disabled]="skip===0||loading()" (click)="page(-1)"><app-icon name="back"/> Previous</button><button class="button quiet small" [disabled]="receipts().length<pageSize||loading()" (click)="page(1)">Next <app-icon name="arrow"/></button></div></footer>
+</section>
+<div class="queue-bottom"><span><span class="connection-dot" [class.offline]="health()&&!healthy()"></span>{{healthy()?'Systems available':health()?'Connection needs attention':'Checking connection…'}} @if(health()?.operatorIdentity){<span class="muted">· {{health()?.operatorIdentity}}</span>}</span><span>Refreshes every 15 seconds @if(updatedAt()){ · {{updatedAt()|date:'HH:mm:ss'}} }</span></div>
+@if(health()&&!healthy()){<div class="alert error"><app-icon name="alert"/><div>Database: {{health()?.database}} · Storage: {{health()?.storage}} @if(health()?.missingFolders?.length){<p>{{health()?.missingFolders.join(', ')}}</p>}</div><button class="link-button" (click)="checkHealth()">Check again</button></div>}
+
+@if(selectedReceipt();as r){
+  <div class="drawer-backdrop" (click)="closeDetails()"></div>
+  <aside class="drawer" appDrawer role="dialog" aria-modal="true" aria-labelledby="queue-file-title">
+    <div class="drawer-heading"><div><div class="eyebrow">FILE OVERVIEW</div><h2 id="queue-file-title">{{r.originalFilename}}</h2></div><button class="button quiet icon-button" aria-label="Close file details" (click)="closeDetails()"><app-icon name="close"/></button></div>
+    <div class="drawer-body"><div class="drawer-meta"><span class="institution-tag">{{r.effectiveInstitution}}</span><app-status [value]="r.batchState||r.importState"/><span>{{r.transferCount}} imported transfers</span></div><app-group-header [header]="r.groupHeader" [compact]="true"/><div class="info-callout"><app-icon name="clock"/><div><strong>Received {{r.receivedUtc+'Z'|date:'dd MMM y, HH:mm'}}</strong><p>{{r.channel==='Poll'?'Received from the institution’s IN folder.':'Received through internal upload.'}} Original: {{r.locationState}}.</p></div></div></div>
+    <div class="drawer-footer"><a class="button quiet" [href]="'/api/file-receipts/'+r.id+'/original'"><app-icon name="download"/> Original XML</a><a class="button primary" [routerLink]="r.batchId?['/batches',r.batchId]:['/receipts',r.id]">{{r.batchId?'Open batch':'View receipt'}} <app-icon name="arrow"/></a></div>
+  </aside>
+}

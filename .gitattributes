@@ -1,0 +1,5 @@
+* text=auto eol=lf
+
+# Preserve the bytes checked by the ISO manifest and duplicate-file demo.
+*.xsd -text
+demo/samples/*.xml -text

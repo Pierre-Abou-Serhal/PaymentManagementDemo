@@ -1,0 +1,14 @@
+<div class="shell">
+  <aside class="sidebar">
+    <a routerLink="/" class="brand" aria-label="Payment Management home"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 10h20m-5-5 5 5-5 5M27 22H7m5-5-5 5 5 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Payment<span class="brand-sub">Management</span></span></a>
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <a routerLink="/" [class.active]="queueActive"><app-icon name="inbox"/> Work queue <span class="nav-indicator"></span></a>
+      <a routerLink="/upload" routerLinkActive="active"><app-icon name="upload"/> Upload file</a>
+      <a routerLink="/settings" routerLinkActive="active"><app-icon name="settings"/> Demo settings</a>
+    </nav>
+    <div class="sidebar-note"><span class="sidebar-note-icon"><app-icon name="layers"/></span><strong>Clarity at every step.</strong><p>From the first receipt to the final status report.</p><span class="sidebar-note-line"></span><small>ISO 20022 · pain.001 / pain.002</small></div>
+    <div class="sidebar-bottom"><span class="operator-avatar"><app-icon name="user"/></span><div><strong>Operator workspace</strong><small>Internal demo environment</small></div></div>
+  </aside>
+  <div class="workspace"><div class="topbar"><div class="breadcrumb"><span>Workspace</span><app-icon name="chevron"/><strong>Payment operations</strong></div><span class="environment-badge"><span></span> Local demo</span></div><main id="main-content" class="main"><router-outlet/></main><footer class="workspace-footer"><span>Payment Management</span><span>External execution outcomes · ISO 20022</span></footer></div>
+</div>
